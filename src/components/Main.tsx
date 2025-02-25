@@ -2,11 +2,9 @@ import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
 import {addTable, addTaskToTable, selectTables} from "../features/tableSlice.ts";
 import {useState} from "react";
 import Modal from "./Modal.tsx";
-import {selectTasks} from "../features/taskSlice.ts";
 
 const Main = () => {
     const tables = useAppSelector(selectTables);
-    const tasks = useAppSelector(selectTasks);
     const dispatch = useAppDispatch();
     const [isModalTable, setIsModalTable] = useState(false);
     const [isModalTask, setIsModalTask] = useState(false);
@@ -19,14 +17,8 @@ const Main = () => {
         description: '',
         completed: false
     });
-    const [currentTask, setCurrentTask] = useState({
-        id: 0,
-        title: '',
-        description: '',
-        completed: false
-    });
 
-    const handleChangeTask = (field: string, value: any) => {
+    const handleChangeTask = (field: string, value: string | number) => {
         setTask(prevTask => ({
             ...prevTask,
             [field]: value,
