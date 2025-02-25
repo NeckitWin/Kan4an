@@ -34,9 +34,15 @@ export const tableSlice = createSlice({
             const table = state.tables.find(table => table.id === action.payload.tableId);
             if (table) table.tasks = table.tasks.filter(task => task.id !== action.payload.taskId);
         },
+        removeAllTables: (state) => {
+            state.tables.forEach(table=>{
+                table.tasks = []
+            })
+            state.tables = []
+        }
     }
 })
 
-export const { addTable, removeTable, addTaskToTable, removeTaskFromTable } = tableSlice.actions;
+export const { addTable, removeTable, addTaskToTable, removeTaskFromTable, removeAllTables } = tableSlice.actions;
 export const selectTables = (state: RootState) => state.tables.tables;
 export default tableSlice.reducer;

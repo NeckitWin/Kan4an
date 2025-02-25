@@ -1,13 +1,14 @@
-import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
-import {removeTable, selectTables} from "../features/tableSlice.ts";
+import {useAppDispatch} from "../app/hooks.ts";
+import {removeAllTables} from "../features/tableSlice.ts";
+import {removeAllTasks} from "../features/taskSlice.ts";
 
 const Header = () => {
-    const tables = useAppSelector(selectTables);
     const dispatch = useAppDispatch();
     const clearTables = () => {
-        tables.forEach(table=>{
-            dispatch(removeTable(table));
-        })
+        dispatch(removeAllTables());
+    }
+    const clearTasks = () => {
+        dispatch(removeAllTasks());
     }
     return (
         <header className='container mx-auto'>
@@ -19,8 +20,12 @@ const Header = () => {
                     <span className='text-3xl font-bold'>Kan4an</span>
                 </a>
                 <ul className='flex gap-8 text-lg'>
-                    <li><button onClick={clearTables} className='cursor-pointer'>Reset All</button></li>
-                    <li><button className='cursor-pointer'>Reset Tasks</button></li>
+                    <li>
+                        <button onClick={clearTables} className='cursor-pointer'>Reset All</button>
+                    </li>
+                    <li>
+                        <button onClick={clearTasks} className='cursor-pointer'>Reset Tasks</button>
+                    </li>
                 </ul>
             </nav>
         </header>
