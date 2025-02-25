@@ -1,7 +1,14 @@
 import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
-import {addTable, addTaskToTable, selectTables} from "../features/tableSlice.ts";
+import {addTable, addTaskToTable, removeTable, selectTables} from "../features/tableSlice.ts";
 import {useState} from "react";
 import Modal from "./Modal.tsx";
+import {Task} from "../features/taskSlice.ts";
+
+interface Table {
+    id: number;
+    title: string;
+    tasks: Task[];
+}
 
 const Main = () => {
     const tables = useAppSelector(selectTables);
@@ -41,6 +48,10 @@ const Main = () => {
         setIsModalTask(false);
     }
 
+    const deleteTable = (table: Table) => {
+        dispatch(removeTable(table))
+    }
+
     return (
         <section
             className="mx-auto container mt-12 bg-contentBack p-8 rounded-xl border-b-2 border-accent/50 shadow-lg">
@@ -54,33 +65,42 @@ const Main = () => {
                         <div key={table.id} className='border border-white/10 rounded-xl p-2'>
                             <table className='h-[600px] w-96'>
                                 <thead>
-                                <th className='text-center font-bold p-2 text-xl border-b border-white/10'>
-                                    {table.title}
-                                </th>
+                                <tr>
+                                    <th className='text-center w-full font-bold p-2 text-xl border-b border-white/10'>
+                                        {table.title}
+                                    </th>
+                                </tr>
                                 </thead>
-                                <tbody className='flex flex-col gap-2'>
+                                <tbody className='align-top'>
                                 {table.tasks.map((task) => (
                                     <tr key={task.id}>
-                                        <th>{task.title}</th>
-                                        <td>{task.description}</td>
+                                        <td>
+                                            <h3>{task.title}</h3>
+                                            {task.description}
+                                        </td>
                                     </tr>
                                 ))}
                                 <tr>
-                                    <button onClick={()=>taskHandler(table.id)} className='w-full border border-accent duration-300 hover:bg-hoverAccent hover:-translate-y-0.5 rounded-xl h-12 mt-2 cursor-pointer text-center'>
-                                        <span className='font-bold text-2xl'>+</span>
-                                    </button>
+                                    <th>
+                                        <button onClick={() => taskHandler(table.id)}
+                                                className='w-full border border-accent duration-300 hover:bg-hoverAccent hover:-translate-y-0.5 rounded-xl h-12 mt-2 cursor-pointer text-center'>
+                                            <span className='font-bold text-2xl'>+</span>
+                                        </button>
+                                    </th>
                                 </tr>
                                 </tbody>
                             </table>
                             <div className='flex flex-row justify-around'>
-                                <button className='cursor-pointer'>Add Task</button>
+                                <button onClick={() => taskHandler(table.id)} className='cursor-pointer'>Add Task
+                                </button>
                                 <button className='cursor-pointer'>Clear Tasks</button>
-                                <button className='cursor-pointer'>Delete Table</button>
+                                <button onClick={()=>deleteTable(table)} className='cursor-pointer'>Delete Table</button>
                             </div>
                         </div>
                     ))}
 
-                    <button onClick={() => setIsModalTable(true)} className='h-[640px] text-8xl text-white/10 hover:text-white/50 w-96 border border-white/10 duration-300 hover:border-white/50 border-dashed rounded-xl flex items-center justify-center cursor-pointer'>
+                    <button onClick={() => setIsModalTable(true)}
+                            className='h-[640px] text-8xl text-white/10 hover:text-white/50 w-96 border border-white/10 duration-300 hover:border-white/50 border-dashed rounded-xl flex items-center justify-center cursor-pointer'>
                         +
                     </button>
                 </div>
