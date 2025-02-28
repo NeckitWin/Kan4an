@@ -4,10 +4,12 @@ import {Table} from "../types/Table.ts";
 
 interface TablesState {
     tables: Table[];
+    currentTableId: number;
 }
 
 const initialState: TablesState = {
-    tables: []
+    tables: [],
+    currentTableId: 0,
 }
 
 export const tableSlice = createSlice({
@@ -30,10 +32,14 @@ export const tableSlice = createSlice({
         },
         removeAllTables: (state) => {
             state.tables = []
+        },
+        setCurrentTableId: (state, action: PayloadAction<{tableId: number;}>)=> {
+          state.currentTableId = action.payload.tableId;
         }
     }
 })
 
-export const { addTable, removeTable, addTaskToTable, removeTaskFromTable, removeAllTables } = tableSlice.actions;
+export const { addTable, removeTable, addTaskToTable, removeTaskFromTable, removeAllTables, setCurrentTableId } = tableSlice.actions;
 export const selectTables = (state: RootState) => state.tables.tables;
+export const selectCurrentTableId = (state: RootState) => state.tables.currentTableId;
 export default tableSlice.reducer;

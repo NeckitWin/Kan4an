@@ -1,13 +1,12 @@
 import React, {ReactNode} from "react";
 import ReactDOM from "react-dom";
+import {ModalProps} from "../../types/Modal.ts";
 
-interface ModalProps {
-    isOpen: boolean;
-    onClose: ()=>void;
+interface ModalBaseProps extends ModalProps {
     children: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({isOpen, onClose, children}) => {
+const Modal: React.FC<ModalBaseProps> = ({isOpen, onClose, children}) => {
     if (!isOpen) return null;
     return ReactDOM.createPortal(
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-xl ">

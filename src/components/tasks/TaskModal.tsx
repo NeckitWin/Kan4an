@@ -1,17 +1,13 @@
 import {useState, FC} from "react";
-import {useAppDispatch} from "../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {Task} from "../../types/Task.ts";
 import {addTask} from "../../features/taskSlice.ts";
-import {addTaskToTable} from "../../features/tableSlice.ts";
+import {addTaskToTable, selectCurrentTableId} from "../../features/tableSlice.ts";
 import Modal from "../base/Modal.tsx";
+import {ModalProps} from "../../types/Modal.ts";
 
-interface TaskModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    tableId: number;
-}
-
-const TaskModal: FC<TaskModalProps> = ({isOpen, onClose, tableId}) => {
+const TaskModal: FC<ModalProps> = ({isOpen, onClose}) => {
+    const currentTableId = useAppSelector(selectCurrentTableId);
     const [taskTitle, setTaskTitle] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
     const dispatch = useAppDispatch();
@@ -26,7 +22,7 @@ const TaskModal: FC<TaskModalProps> = ({isOpen, onClose, tableId}) => {
         }
 
         dispatch(addTask(newTask));
-        dispatch(addTaskToTable({tableId: tableId, taskId: newTask.id}))
+        dispatch(addTaskToTable({tableId: currentTableId, taskId: newTask.id}))
 
         onClose()
     }
