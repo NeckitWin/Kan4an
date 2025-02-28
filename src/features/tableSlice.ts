@@ -5,7 +5,7 @@ import {RootState} from "../app/store.ts";
 interface Table {
     id: number;
     title: string;
-    tasks: Task[];
+    tasksIds: number[];
 }
 
 interface TablesState {
@@ -23,21 +23,18 @@ export const tableSlice = createSlice({
         addTable: (state, action: PayloadAction<Table>) => {
             state.tables.push(action.payload);
         },
-        removeTable: (state, action: PayloadAction<Table>) => {
-            state.tables = state.tables.filter(table => table.id !== action.payload.id);
+        removeTable: (state, action: PayloadAction<{tableId: number}>) => {
+            state.tables = state.tables.filter(table => table.id !== action.payload.tableId);
         },
-        addTaskToTable: (state, action: PayloadAction<{ tableId: number; task: Task }>) => {
-            const table = state.tables.find(table => table.id === action.payload.tableId);
-            if (table) table.tasks.push(action.payload.task);
+        addTaskToTable: (state, action: PayloadAction<{ tableId: number; taskId: number }>) => {
+            const currentTable = state.tables.find(table => table.id === action.payload.tableId);
+            if (currentTable) currentTable.tasksIds.push(action.payload.taskId);
         },
         removeTaskFromTable: (state, action: PayloadAction<{ tableId: number; taskId: number; }>) => {
             const table = state.tables.find(table => table.id === action.payload.tableId);
-            if (table) table.tasks = table.tasks.filter(task => task.id !== action.payload.taskId);
+            if (table) table.tasksIds = table.tasksIds.filter(taskId => taskId !== action.payload.taskId);
         },
         removeAllTables: (state) => {
-            state.tables.forEach(table=>{
-                table.tasks = []
-            })
             state.tables = []
         }
     }

@@ -1,29 +1,35 @@
 import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
 import {addTable, addTaskToTable, removeTable, selectTables} from "../features/tableSlice.ts";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import Modal from "./Modal.tsx";
-import {Task} from "../features/taskSlice.ts";
+import {addTask, selectTasks, Task} from "../features/taskSlice.ts";
 
-interface Table {
-    id: number;
-    title: string;
-    tasks: Task[];
+interface TaskState extends Omit<Task, "id" | "createdDate"> {
+    id?: number;
+    createdDate?: number;
 }
 
 const Main = () => {
     const tables = useAppSelector(selectTables);
+    const tasks = useAppSelector(selectTasks);
     const dispatch = useAppDispatch();
     const [isModalTable, setIsModalTable] = useState(false);
     const [isModalTask, setIsModalTask] = useState(false);
     const [tableTitle, setTableTitle] = useState("");
     const [currentTableId, setCurrentTableId] = useState(0);
 
-    const [task, setTask] = useState({
-        id: 0,
+    const [task, setTask] = useState<TaskState>({
         title: '',
         description: '',
         completed: false
     });
+
+    const taskMap = useMemo(() => {
+        return tasks.reduce((acc, task) => {
+            acc[task.id] = task;
+            return acc;
+        }, {} as Record<number, Task>)
+    }, [tasks])
 
     const handleChangeTask = (field: string, value: string | number) => {
         setTask(prevTask => ({
@@ -34,22 +40,23 @@ const Main = () => {
 
     const tableHandler = () => {
         setIsModalTable(false);
-        dispatch(addTable({id: Date.now(), title: tableTitle, tasks: []}));
+        dispatch(addTable({id: Date.now(), title: tableTitle, tasksIds: []}));
     }
 
     const taskHandler = (tableId: number) => {
-        handleChangeTask('id', Date.now());
         setCurrentTableId(tableId);
         setIsModalTask(true);
     }
 
     const taskSubmit = () => {
-        dispatch(addTaskToTable({tableId: currentTableId, task: task}));
+        const now = Date.now();
+        dispatch(addTask({...task, id: now, createdDate: now}));
+        dispatch(addTaskToTable({tableId: currentTableId, taskId: now}))
         setIsModalTask(false);
     }
 
-    const deleteTable = (table: Table) => {
-        dispatch(removeTable(table))
+    const deleteTable = (tableId: number) => {
+        dispatch(removeTable({tableId: tableId}))
     }
 
     return (
@@ -72,14 +79,17 @@ const Main = () => {
                                 </tr>
                                 </thead>
                                 <tbody className='align-top'>
-                                {table.tasks.map((task) => (
-                                    <tr key={task.id}>
-                                        <td>
-                                            <h3>{task.title}</h3>
-                                            {task.description}
-                                        </td>
-                                    </tr>
-                                ))}
+                                {table.tasksIds.map((taskId) => {
+                                    const task = taskMap[taskId];
+                                    return (
+                                        <tr key={task.id} className='h-max'>
+                                            <td className='h-max'>
+                                                <h3>{task.title}</h3>
+                                                {task.description}
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                                 <tr>
                                     <th>
                                         <button onClick={() => taskHandler(table.id)}
@@ -94,7 +104,8 @@ const Main = () => {
                                 <button onClick={() => taskHandler(table.id)} className='cursor-pointer'>Add Task
                                 </button>
                                 <button className='cursor-pointer'>Clear Tasks</button>
-                                <button onClick={()=>deleteTable(table)} className='cursor-pointer'>Delete Table</button>
+                                <button onClick={() => deleteTable(table.id)} className='cursor-pointer'>Delete Table
+                                </button>
                             </div>
                         </div>
                     ))}
