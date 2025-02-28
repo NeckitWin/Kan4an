@@ -1,13 +1,10 @@
 import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
-import {addTable, addTaskToTable, removeTable, selectTables} from "../features/tableSlice.ts";
+import {addTable, removeTable, selectTables} from "../features/tableSlice.ts";
 import {useMemo, useState} from "react";
-import Modal from "./Modal.tsx";
-import {addTask, selectTasks, Task} from "../features/taskSlice.ts";
-
-interface TaskState extends Omit<Task, "id" | "createdDate"> {
-    id?: number;
-    createdDate?: number;
-}
+import Modal from "./base/Modal.tsx";
+import {selectTasks} from "../features/taskSlice.ts";
+import {Task} from "../types/Task.ts";
+import TaskModal from "./tasks/TaskModal.tsx";
 
 const Main = () => {
     const tables = useAppSelector(selectTables);
@@ -18,25 +15,12 @@ const Main = () => {
     const [tableTitle, setTableTitle] = useState("");
     const [currentTableId, setCurrentTableId] = useState(0);
 
-    const [task, setTask] = useState<TaskState>({
-        title: '',
-        description: '',
-        completed: false
-    });
-
     const taskMap = useMemo(() => {
         return tasks.reduce((acc, task) => {
             acc[task.id] = task;
             return acc;
         }, {} as Record<number, Task>)
     }, [tasks])
-
-    const handleChangeTask = (field: string, value: string | number) => {
-        setTask(prevTask => ({
-            ...prevTask,
-            [field]: value,
-        }));
-    };
 
     const tableHandler = () => {
         setIsModalTable(false);
@@ -46,13 +30,6 @@ const Main = () => {
     const taskHandler = (tableId: number) => {
         setCurrentTableId(tableId);
         setIsModalTask(true);
-    }
-
-    const taskSubmit = () => {
-        const now = Date.now();
-        dispatch(addTask({...task, id: now, createdDate: now}));
-        dispatch(addTaskToTable({tableId: currentTableId, taskId: now}))
-        setIsModalTask(false);
     }
 
     const deleteTable = (tableId: number) => {
@@ -128,18 +105,7 @@ const Main = () => {
                 </div>
             </Modal>
 
-            <Modal isOpen={isModalTask} onClose={() => setIsModalTask(false)}>
-                <div className='flex flex-col gap-2 w-64'>
-                    <label className='text-textPrimary'>Create new Task</label>
-                    <input onChange={e => handleChangeTask('title', e.target.value)} type="text"
-                           className='bg-textPrimary text-center'/>
-                    <input onChange={e => handleChangeTask('description', e.target.value)} type="text"
-                           className='bg-textPrimary text-center'/>
-                    <button onClick={taskSubmit}
-                            className='bg-accent text-textPrimary rounded-md cursor-pointer duration-200 hover:bg-hoverAccent'>Create
-                    </button>
-                </div>
-            </Modal>
+            <TaskModal isOpen={isModalTask} onClose={()=>setIsModalTask(false)} tableId={currentTableId}/>
         </section>
     )
 }

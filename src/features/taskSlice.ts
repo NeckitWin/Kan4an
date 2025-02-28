@@ -1,13 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from "../app/store.ts";
-
-export interface Task {
-    id: number;
-    title: string;
-    description: string;
-    createdDate: number;
-    completed: boolean;
-}
+import {Task} from "../types/Task.ts";
 
 interface TaskState {
     tasks: Task[];
