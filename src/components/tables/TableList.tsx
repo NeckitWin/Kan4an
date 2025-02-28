@@ -12,7 +12,7 @@ const TableList = () => {
             className='container flex flex-row bg-secondaryBack mt-8 text-textPrimary p-4 rounded-lg overflow-x-auto gap-10'>
             <div className="flex gap-4">
                 {tables.map(table => (
-                    <TableItem table={table}/>
+                    <TableItem key={table.id} table={table}/>
                 ))}
 
                 <button onClick={() => dispatch(openModal('table'))}

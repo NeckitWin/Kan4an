@@ -17,8 +17,8 @@ const Main = () => {
 
             <TableList />
 
-            <TableModal isOpen={modals && modals.modalType==='table'} onClose={()=>dispatch(closeModal())} />
-            <TaskModal isOpen={modals && modals.modalType==='task'} onClose={()=>dispatch(closeModal())} />
+            <TableModal isOpen={modals.modalType==='table'} onClose={()=>dispatch(closeModal())} />
+            <TaskModal isOpen={modals.modalType==='task'} onClose={()=>dispatch(closeModal())} />
         </section>
     )
 }

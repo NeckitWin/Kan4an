@@ -2,7 +2,7 @@ import {FC} from "react";
 import {Table} from "../../types/Table.ts";
 import {useAppDispatch} from "../../app/hooks.ts";
 import {openModal} from "../../features/modalSlice.ts";
-import {removeTable, setCurrentTableId} from "../../features/tableSlice.ts";
+import {clearTasksFromTable, removeTable, setCurrentTableId} from "../../features/tableSlice.ts";
 import TaskList from "../tasks/TaskList.tsx";
 
 interface TableItemProps {
@@ -18,7 +18,7 @@ const TableItem: FC<TableItemProps> = ({table}) => {
     }
 
     return (
-        <div key={table.id} className='border border-white/10 rounded-xl p-2'>
+        <div className='border border-white/10 rounded-xl p-2'>
             <table className='h-[600px] w-96'>
                 <thead>
                 <tr>
@@ -27,13 +27,14 @@ const TableItem: FC<TableItemProps> = ({table}) => {
                     </th>
                 </tr>
                 </thead>
-                <TaskList table={table} taskHandler={taskHandler} />
+                <TaskList table={table} taskHandler={taskHandler}/>
             </table>
             <div className='flex flex-row justify-around'>
                 <button onClick={() => taskHandler(table.id)} className='cursor-pointer'>Add Task
                 </button>
-                <button className='cursor-pointer'>Clear Tasks</button>
-                <button onClick={() => dispatch(removeTable({tableId: table.id}))} className='cursor-pointer'>Delete Table
+                <button onClick={()=>dispatch(clearTasksFromTable({tableId: table.id}))} className='cursor-pointer'>Clear Tasks</button>
+                <button onClick={() => dispatch(removeTable({tableId: table.id}))} className='cursor-pointer'>Delete
+                    Table
                 </button>
             </div>
         </div>

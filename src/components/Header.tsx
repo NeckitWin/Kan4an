@@ -1,5 +1,5 @@
 import {useAppDispatch} from "../app/hooks.ts";
-import {removeAllTables} from "../features/tableSlice.ts";
+import {clearAllTasksFromTables, removeAllTables} from "../features/tableSlice.ts";
 import {removeAllTasks} from "../features/taskSlice.ts";
 
 const Header = () => {
@@ -8,6 +8,7 @@ const Header = () => {
         dispatch(removeAllTables());
     }
     const clearTasks = () => {
+        dispatch(clearAllTasksFromTables());
         dispatch(removeAllTasks());
     }
     return (

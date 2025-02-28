@@ -25,7 +25,7 @@ const TaskList: FC<TaskListProps> = ({table, taskHandler}) => {
         {table.tasksIds.map((taskId) => {
             const task = taskMap[taskId];
             return (
-                <TaskItem key={taskId} task={task}/>
+                <TaskItem key={taskId} task={task} />
             )
         })}
         <tr>

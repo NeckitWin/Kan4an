@@ -19,7 +19,7 @@ export const tableSlice = createSlice({
         addTable: (state, action: PayloadAction<Table>) => {
             state.tables.push(action.payload);
         },
-        removeTable: (state, action: PayloadAction<{tableId: number}>) => {
+        removeTable: (state, action: PayloadAction<{ tableId: number }>) => {
             state.tables = state.tables.filter(table => table.id !== action.payload.tableId);
         },
         addTaskToTable: (state, action: PayloadAction<{ tableId: number; taskId: number }>) => {
@@ -33,13 +33,31 @@ export const tableSlice = createSlice({
         removeAllTables: (state) => {
             state.tables = []
         },
-        setCurrentTableId: (state, action: PayloadAction<{tableId: number;}>)=> {
-          state.currentTableId = action.payload.tableId;
+        setCurrentTableId: (state, action: PayloadAction<{ tableId: number; }>) => {
+            state.currentTableId = action.payload.tableId;
+        },
+        clearTasksFromTable: (state, action: PayloadAction<{ tableId: number; }>) => {
+            const currentTable = state.tables.find(table=>table.id===action.payload.tableId);
+            if (currentTable) currentTable.tasksIds = [];
+        },
+        clearAllTasksFromTables: (state) => {
+            state.tables.forEach(table => {
+                table.tasksIds = [];
+            })
         }
     }
 })
 
-export const { addTable, removeTable, addTaskToTable, removeTaskFromTable, removeAllTables, setCurrentTableId } = tableSlice.actions;
+export const {
+    addTable,
+    removeTable,
+    addTaskToTable,
+    removeTaskFromTable,
+    removeAllTables,
+    setCurrentTableId,
+    clearTasksFromTable,
+    clearAllTasksFromTables
+} = tableSlice.actions;
 export const selectTables = (state: RootState) => state.tables.tables;
 export const selectCurrentTableId = (state: RootState) => state.tables.currentTableId;
 export default tableSlice.reducer;
