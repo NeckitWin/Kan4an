@@ -18,18 +18,12 @@ const TableItem: FC<TableItemProps> = ({table}) => {
     }
 
     return (
-        <div className='border border-white/10 rounded-xl p-2'>
-            <table className='h-[600px] w-96'>
-                <thead>
-                <tr>
-                    <th className='text-center w-full font-bold p-2 text-xl border-b border-white/10'>
-                        {table.title}
-                    </th>
-                </tr>
-                </thead>
+        <div className='flex flex-col border border-white/10 rounded-xl p-2'>
+            <div className='w-96 h-[600px] overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500'>
+                <h3 className='font-bold text-center text-xl'>{table.title}</h3>
                 <TaskList table={table} taskHandler={taskHandler}/>
-            </table>
-            <div className='flex flex-row justify-around'>
+            </div>
+            <div className='flex flex-row justify-around items-center h-[40px]'>
                 <button onClick={() => taskHandler(table.id)} className='cursor-pointer'>Add Task
                 </button>
                 <button onClick={()=>dispatch(clearTasksFromTable({tableId: table.id}))} className='cursor-pointer'>Clear Tasks</button>

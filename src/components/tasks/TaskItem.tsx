@@ -8,12 +8,10 @@ interface TaskItemProps {
 const TaskItem: FC<TaskItemProps> = ({task}) => {
 
     return (
-        <tr className={`h-12`}>
-            <td>
+        <div className={`h-12`}>
                 <h3 className='font-bold'>{task.title}</h3>
                 {task.description}
-            </td>
-        </tr>
+        </div>
     )
 }
 

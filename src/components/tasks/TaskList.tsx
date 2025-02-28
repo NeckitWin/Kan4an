@@ -21,22 +21,18 @@ const TaskList: FC<TaskListProps> = ({table, taskHandler}) => {
     }, [tasks]);
 
     return (
-        <tbody className='align-top'>
-        {table.tasksIds.map((taskId) => {
-            const task = taskMap[taskId];
-            return (
-                <TaskItem key={taskId} task={task} />
-            )
-        })}
-        <tr>
-            <th>
-                <button onClick={() => taskHandler(table.id)}
-                        className='w-full border border-accent duration-300 hover:bg-hoverAccent hover:-translate-y-0.5 rounded-xl h-12 mt-2 cursor-pointer text-center'>
-                    <span className='font-bold text-2xl'>+</span>
-                </button>
-            </th>
-        </tr>
-        </tbody>
+        <div>
+            {table.tasksIds.map((taskId) => {
+                const task = taskMap[taskId];
+                return (
+                    <TaskItem key={taskId} task={task}/>
+                )
+            })}
+            <button onClick={() => taskHandler(table.id)}
+                    className='w-full border border-accent duration-300 hover:bg-hoverAccent hover:-translate-y-0.5 rounded-xl h-12 mt-2 cursor-pointer text-center'>
+                <span className='font-bold text-2xl'>+</span>
+            </button>
+        </div>
     )
 }
 
