@@ -1,10 +1,10 @@
 import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
-import {addTable, removeTable, selectTables} from "../features/tableSlice.ts";
+import {removeTable, selectTables} from "../features/tableSlice.ts";
 import {useMemo, useState} from "react";
-import Modal from "./base/Modal.tsx";
 import {selectTasks} from "../features/taskSlice.ts";
 import {Task} from "../types/Task.ts";
 import TaskModal from "./tasks/TaskModal.tsx";
+import TableModal from "./tables/TableModal.tsx";
 
 const Main = () => {
     const tables = useAppSelector(selectTables);
@@ -12,7 +12,6 @@ const Main = () => {
     const dispatch = useAppDispatch();
     const [isModalTable, setIsModalTable] = useState(false);
     const [isModalTask, setIsModalTask] = useState(false);
-    const [tableTitle, setTableTitle] = useState("");
     const [currentTableId, setCurrentTableId] = useState(0);
 
     const taskMap = useMemo(() => {
@@ -21,11 +20,6 @@ const Main = () => {
             return acc;
         }, {} as Record<number, Task>)
     }, [tasks])
-
-    const tableHandler = () => {
-        setIsModalTable(false);
-        dispatch(addTable({id: Date.now(), title: tableTitle, tasksIds: []}));
-    }
 
     const taskHandler = (tableId: number) => {
         setCurrentTableId(tableId);
@@ -94,17 +88,8 @@ const Main = () => {
                 </div>
             </div>
 
-            <Modal isOpen={isModalTable} onClose={() => setIsModalTable(false)}>
-                <div className='flex flex-col gap-2 w-64'>
-                    <label className='text-textPrimary'>Create new Table</label>
-                    <input onChange={e => setTableTitle(e.target.value)} type="text"
-                           className='bg-textPrimary text-center'/>
-                    <button onClick={tableHandler}
-                            className='bg-accent text-textPrimary rounded-md cursor-pointer duration-200 hover:bg-hoverAccent'>Create
-                    </button>
-                </div>
-            </Modal>
 
+            <TableModal isOpen={isModalTable} onClose={()=>setIsModalTable(false)}/>
             <TaskModal isOpen={isModalTask} onClose={()=>setIsModalTask(false)} tableId={currentTableId}/>
         </section>
     )

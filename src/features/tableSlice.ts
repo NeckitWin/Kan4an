@@ -2,8 +2,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../app/store.ts";
 import {Table} from "../types/Table.ts";
 
-
-
 interface TablesState {
     tables: Table[];
 }
