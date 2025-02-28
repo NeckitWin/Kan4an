@@ -1,38 +1,28 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../app/store.ts";
 
 interface ModalState {
-    taskModalOpen: boolean;
-    tableModalOpen: boolean;
+    modalType: 'task' | 'table' | null;
 }
 
 const initialState: ModalState = {
-    taskModalOpen: false,
-    tableModalOpen: false,
+    modalType: null
 };
 
 export const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openTaskModal(state) {
-            state.taskModalOpen = true
+        openModal(state, action: PayloadAction<'task' | 'table'>) {
+            state.modalType = action.payload;
         },
 
-        closeTaskModal(state) {
-            state.taskModalOpen = false
-        },
-
-        openTableModal(state) {
-            state.tableModalOpen = true
-        },
-
-        closeTableModal(state) {
-            state.tableModalOpen = false
-        },
+        closeModal(state) {
+            state.modalType = null;
+        }
     }
 })
 
-export const { openTaskModal, closeTaskModal, openTableModal, closeTableModal } = modalSlice.actions;
+export const {openModal, closeModal} = modalSlice.actions;
 export const selectModals = (state: RootState) => state.modal;
 export default modalSlice.reducer;

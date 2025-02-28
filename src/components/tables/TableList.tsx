@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {selectTables} from "../../features/tableSlice.ts";
-import {openTableModal} from "../../features/modalSlice.ts";
+import {openModal} from "../../features/modalSlice.ts";
 import TableItem from "./TableItem.tsx";
 
 const TableList = () => {
@@ -15,7 +15,7 @@ const TableList = () => {
                     <TableItem table={table}/>
                 ))}
 
-                <button onClick={() => dispatch(openTableModal())}
+                <button onClick={() => dispatch(openModal('table'))}
                         className='h-[640px] text-8xl text-white/10 hover:text-white/50 w-96 border border-white/10
                          duration-300 hover:border-white/50 border-dashed rounded-xl
                          flex items-center justify-center cursor-pointer'>+</button>

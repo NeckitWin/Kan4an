@@ -2,7 +2,7 @@ import TaskModal from "./tasks/TaskModal.tsx";
 import TableModal from "./tables/TableModal.tsx";
 import TableList from "./tables/TableList.tsx";
 import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
-import {closeTableModal, closeTaskModal, selectModals} from "../features/modalSlice.ts";
+import {closeModal, selectModals} from "../features/modalSlice.ts";
 
 const Main = () => {
     const modals = useAppSelector(selectModals);
@@ -17,8 +17,8 @@ const Main = () => {
 
             <TableList />
 
-            <TableModal isOpen={modals.tableModalOpen} onClose={()=>dispatch(closeTableModal())} />
-            <TaskModal isOpen={modals.taskModalOpen} onClose={()=>dispatch(closeTaskModal())} />
+            <TableModal isOpen={modals && modals.modalType==='table'} onClose={()=>dispatch(closeModal())} />
+            <TaskModal isOpen={modals && modals.modalType==='task'} onClose={()=>dispatch(closeModal())} />
         </section>
     )
 }

@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {Table} from "../../types/Table.ts";
 import {useAppDispatch} from "../../app/hooks.ts";
-import {openTaskModal} from "../../features/modalSlice.ts";
+import {openModal} from "../../features/modalSlice.ts";
 import {removeTable, setCurrentTableId} from "../../features/tableSlice.ts";
 import TaskList from "../tasks/TaskList.tsx";
 
@@ -14,7 +14,7 @@ const TableItem: FC<TableItemProps> = ({table}) => {
 
     const taskHandler = (tableId: number) => {
         dispatch(setCurrentTableId({tableId: tableId}));
-        dispatch(openTaskModal());
+        dispatch(openModal('task'));
     }
 
     return (
