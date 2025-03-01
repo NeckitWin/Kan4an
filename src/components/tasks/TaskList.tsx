@@ -21,7 +21,7 @@ const TaskList: FC<TaskListProps> = ({table, taskHandler}) => {
     }, [tasks]);
 
     return (
-        <div>
+        <div className='h-[550px] px-2 flex flex-col gap-2 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500'>
             {table.tasksIds.map((taskId) => {
                 const task = taskMap[taskId];
                 return (
@@ -29,7 +29,7 @@ const TaskList: FC<TaskListProps> = ({table, taskHandler}) => {
                 )
             })}
             <button onClick={() => taskHandler(table.id)}
-                    className='w-full border border-accent duration-300 hover:bg-hoverAccent hover:-translate-y-0.5 rounded-xl h-12 mt-2 cursor-pointer text-center'>
+                    className='w-full border border-accent duration-300 hover:bg-hoverAccent/10 hover:-translate-y-0.5 rounded-lg shadow-sm shadow-hoverAccent min-h-12 mt-2 cursor-pointer text-center'>
                 <span className='font-bold text-2xl'>+</span>
             </button>
         </div>

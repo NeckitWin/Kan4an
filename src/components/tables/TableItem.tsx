@@ -19,8 +19,8 @@ const TableItem: FC<TableItemProps> = ({table}) => {
 
     return (
         <div className='flex flex-col border border-white/10 rounded-xl p-2'>
-            <div className='w-96 h-[600px] overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500'>
-                <h3 className='font-bold text-center text-xl'>{table.title}</h3>
+            <div className='w-96 h-[600px]'>
+                <h3 className='font-bold text-center text-xl p-2'>{table.title}</h3>
                 <TaskList table={table} taskHandler={taskHandler}/>
             </div>
             <div className='flex flex-row justify-around items-center h-[40px]'>
