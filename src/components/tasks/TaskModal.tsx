@@ -19,22 +19,25 @@ const TaskModal: FC<ModalProps> = ({isOpen, onClose}) => {
             description: taskDescription,
             completed: false,
             createdDate: now
-        }
+        };
 
         dispatch(addTask(newTask));
-        dispatch(addTaskToTable({tableId: currentTableId, taskId: newTask.id}))
+        dispatch(addTaskToTable({tableId: currentTableId, taskId: newTask.id}));
 
-        onClose()
+        setTaskTitle('');
+        setTaskDescription('');
+
+        onClose();
     }
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className='flex flex-col gap-2 w-64'>
                 <label className='text-textPrimary'>Create new Task</label>
-                <input onChange={e => setTaskTitle(e.target.value)} type="text"
-                       className='bg-textPrimary text-center'/>
-                <input onChange={e => setTaskDescription(e.target.value)} type="text"
-                       className='bg-textPrimary text-center'/>
+                <input value={taskTitle} onChange={e => setTaskTitle(e.target.value)} type="text"
+                       className='bg-textPrimary text-center' placeholder='Title'/>
+                <input value={taskDescription} onChange={e => setTaskDescription(e.target.value)} type="text"
+                       className='bg-textPrimary text-center' placeholder='Description'/>
                 <button onClick={handleSubmit}
                         className='bg-accent text-textPrimary rounded-md cursor-pointer duration-200 hover:bg-hoverAccent'>Create
                 </button>

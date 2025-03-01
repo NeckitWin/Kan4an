@@ -30,8 +30,8 @@ const TableModal: FC<TableModalProps> = ({isOpen, onClose}) => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className='flex flex-col gap-2 w-64'>
                 <label className='text-textPrimary'>Create new Table</label>
-                <input onChange={e => setTableTitle(e.target.value)} type="text"
-                       className='bg-textPrimary text-center'/>
+                <input value={tableTitle} onChange={e => setTableTitle(e.target.value)} type="text"
+                       className='bg-textPrimary text-center' placeholder='Title'/>
                 <button onClick={handleSubmit}
                         className='bg-accent text-textPrimary rounded-md cursor-pointer duration-200 hover:bg-hoverAccent'>Create
                 </button>
