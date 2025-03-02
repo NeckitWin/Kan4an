@@ -17,8 +17,8 @@ export const taskSlice = createSlice({
         addTask: (state, action: PayloadAction<Task>) => {
             state.tasks.push(action.payload);
         },
-        removeTask: (state, action: PayloadAction<Task>) => {
-            state.tasks = state.tasks.filter(task => task.id !== action.payload.id);
+        removeTask: (state, action: PayloadAction<{taskId: number}>) => {
+            state.tasks = state.tasks.filter(task => task.id !== action.payload.taskId);
         },
         toggleTask: (state, action: PayloadAction<Task>) => {
             const task = state.tasks.find(task => task.id === action.payload.id);
