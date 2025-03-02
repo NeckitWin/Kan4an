@@ -14,7 +14,7 @@ const TableItem: FC<TableItemProps> = ({table}) => {
 
     const taskHandler = (tableId: number) => {
         dispatch(setCurrentTableId({tableId: tableId}));
-        dispatch(openModal('task'));
+        dispatch(openModal('newTask'));
     }
 
     return (

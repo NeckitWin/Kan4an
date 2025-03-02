@@ -2,7 +2,8 @@ import {Task} from "../../types/Task.ts";
 import {FC} from "react";
 import {useAppDispatch} from "../../app/hooks.ts";
 import {removeTaskFromTable} from "../../features/tableSlice.ts";
-import {removeTask} from "../../features/taskSlice.ts";
+import {removeTask, setCurrentTask} from "../../features/taskSlice.ts";
+import {openModal} from "../../features/modalSlice.ts";
 
 interface TaskItemProps {
     tableId: number;
@@ -11,6 +12,11 @@ interface TaskItemProps {
 
 const TaskItem: FC<TaskItemProps> = ({task, tableId}) => {
     const dispatch = useAppDispatch();
+
+    const openTaskInfo = () => {
+        dispatch(setCurrentTask(task));
+        dispatch(openModal('infoTask'));
+    }
 
     const deleteTask = () => {
         dispatch(removeTaskFromTable({taskId: task.id, tableId: tableId}));
@@ -26,7 +32,7 @@ const TaskItem: FC<TaskItemProps> = ({task, tableId}) => {
                 <button>
                     <img src="svg/move.svg" alt="move" className='w-4 h-4 cursor-pointer'/>
                 </button>
-                <button>
+                <button onClick={openTaskInfo}>
                     <img src="svg/info.svg" alt="info" className='w-4 h-4 cursor-pointer'/>
                 </button>
                 <button onClick={deleteTask}>

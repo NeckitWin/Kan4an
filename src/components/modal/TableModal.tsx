@@ -1,17 +1,17 @@
 import Modal from "../base/Modal.tsx";
-import {FC, useState} from "react";
-import {useAppDispatch} from "../../app/hooks.ts";
+import {useState} from "react";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {addTable} from "../../features/tableSlice.ts";
 import {Table} from "../../types/Table.ts";
+import {closeModal, selectModals} from "../../features/modalSlice.ts";
 
-interface TableModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
-
-const TableModal: FC<TableModalProps> = ({isOpen, onClose}) => {
+const TableModal = () => {
     const [tableTitle, setTableTitle] = useState('');
     const dispatch = useAppDispatch();
+    const modal = useAppSelector(selectModals);
+    const isOpen = modal.modalType==='table'
+    const onClose = () => dispatch(closeModal());
+
     const handleSubmit = () => {
         const now = Date.now();
         const newTable: Table = {
@@ -24,10 +24,13 @@ const TableModal: FC<TableModalProps> = ({isOpen, onClose}) => {
         dispatch(addTable(newTable));
 
         onClose();
+
+        setTableTitle('');
     }
 
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen}>
             <div className='flex flex-col gap-2 w-64'>
                 <label className='text-textPrimary'>Create new Table</label>
                 <input value={tableTitle} onChange={e => setTableTitle(e.target.value)} type="text"

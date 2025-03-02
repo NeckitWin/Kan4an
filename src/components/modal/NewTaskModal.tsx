@@ -1,16 +1,20 @@
-import {useState, FC} from "react";
+import {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {Task} from "../../types/Task.ts";
 import {addTask} from "../../features/taskSlice.ts";
 import {addTaskToTable, selectCurrentTableId} from "../../features/tableSlice.ts";
 import Modal from "../base/Modal.tsx";
-import {ModalProps} from "../../types/Modal.ts";
+import {closeModal, selectModals} from "../../features/modalSlice.ts";
 
-const TaskModal: FC<ModalProps> = ({isOpen, onClose}) => {
+const NewTaskModal = () => {
     const currentTableId = useAppSelector(selectCurrentTableId);
     const [taskTitle, setTaskTitle] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
     const dispatch = useAppDispatch();
+    const modal = useAppSelector(selectModals);
+    const isOpen = modal.modalType === 'newTask';
+
+    const onClose = () => dispatch(closeModal());
     const handleSubmit = () => {
         const now = Date.now();
         const newTask: Task = {
@@ -31,7 +35,7 @@ const TaskModal: FC<ModalProps> = ({isOpen, onClose}) => {
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen}>
             <div className='flex flex-col gap-2 w-64'>
                 <label className='text-textPrimary'>Create new Task</label>
                 <input value={taskTitle} onChange={e => setTaskTitle(e.target.value)} type="text"
@@ -46,4 +50,4 @@ const TaskModal: FC<ModalProps> = ({isOpen, onClose}) => {
     )
 }
 
-export default TaskModal;
+export default NewTaskModal;

@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../app/store.ts";
 
 interface ModalState {
-    modalType: 'task' | 'table' | null;
+    modalType: 'newTask' | 'table' | 'infoTask' | null;
 }
 
 const initialState: ModalState = {
@@ -13,7 +13,7 @@ export const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openModal(state, action: PayloadAction<'task' | 'table'>) {
+        openModal(state, action: PayloadAction<'newTask' | 'infoTask' | 'table'>) {
             state.modalType = action.payload;
         },
 

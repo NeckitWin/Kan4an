@@ -5,11 +5,11 @@ import modalReducer from "../features/modalSlice.ts";
 
 const saveStateToLocalStorage = (state: RootState) => {
   const jsonStateData = JSON.stringify(state);
-  localStorage.setItem('reduxState', jsonStateData);
+  localStorage.setItem('kan4anReduxState', jsonStateData);
 }
 
 const getStateFromLocalStorage = () => {
-  const stateData = localStorage.getItem('reduxState');
+  const stateData = localStorage.getItem('kan4anReduxState');
   if (!stateData) return undefined;
   return JSON.parse(stateData);
 }
