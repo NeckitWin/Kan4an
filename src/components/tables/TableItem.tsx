@@ -1,4 +1,3 @@
-import {FC} from "react";
 import {Table} from "../../types/Table.ts";
 import {useAppDispatch} from "../../app/hooks.ts";
 import {openModal} from "../../features/modalSlice.ts";
@@ -9,7 +8,7 @@ interface TableItemProps {
     table: Table;
 }
 
-const TableItem: FC<TableItemProps> = ({table}) => {
+const TableItem = ({table}: TableItemProps) => {
     const dispatch = useAppDispatch();
 
     const taskHandler = (tableId: number) => {
@@ -26,7 +25,9 @@ const TableItem: FC<TableItemProps> = ({table}) => {
             <div className='flex flex-row justify-around items-center h-[40px]'>
                 <button onClick={() => taskHandler(table.id)} className='cursor-pointer'>Add Task
                 </button>
-                <button onClick={()=>dispatch(clearTasksFromTable({tableId: table.id}))} className='cursor-pointer'>Clear Tasks</button>
+                <button onClick={() => dispatch(clearTasksFromTable({tableId: table.id}))}
+                        className='cursor-pointer'>Clear Tasks
+                </button>
                 <button onClick={() => dispatch(removeTable({tableId: table.id}))} className='cursor-pointer'>Delete
                     Table
                 </button>

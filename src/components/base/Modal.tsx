@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import {ReactNode} from "react";
 import ReactDOM from "react-dom";
 import {useAppDispatch} from "../../app/hooks.ts";
 import {closeModal} from "../../features/modalSlice.ts";
@@ -8,7 +8,7 @@ export interface ModalProps {
     children: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({isOpen, children}) => {
+const Modal = ({isOpen, children}: ModalProps) => {
     const dispatch = useAppDispatch();
     if (!isOpen) return null;
     const onClose = () => dispatch(closeModal());
