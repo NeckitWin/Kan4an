@@ -9,9 +9,10 @@ import {CSS} from '@dnd-kit/utilities';
 interface TaskItemProps {
     tableId: number;
     task: Task;
+    idDragging?: boolean;
 }
 
-const TaskItem = ({task, tableId}: TaskItemProps) => {
+const TaskItem = ({task, tableId, idDragging = false}: TaskItemProps) => {
     const dispatch = useAppDispatch();
 
     const {attributes, listeners, setNodeRef, transform} = useDraggable({
@@ -19,7 +20,8 @@ const TaskItem = ({task, tableId}: TaskItemProps) => {
     })
 
     const style = {
-        transform: CSS.Translate.toString(transform)
+        transform: CSS.Translate.toString(transform),
+        opacity: idDragging ? 0.5 : 1
     }
 
     const openTaskInfo = () => {
@@ -33,7 +35,7 @@ const TaskItem = ({task, tableId}: TaskItemProps) => {
     };
 
     return (
-        <div className="p-4 border border-white/10 rounded-lg shadow-sm flex justify-between"
+        <li className="p-4 border border-white/10 rounded-lg shadow-sm flex justify-between bg-secondaryBack"
              style={style} ref={setNodeRef} >
             <div>
                 <h5 className="mb-2 text-2xl font-semibold tracking-tight text-white">{task.title}</h5>
@@ -50,7 +52,7 @@ const TaskItem = ({task, tableId}: TaskItemProps) => {
                     <img src="svg/bin.svg" alt="bin" className='w-4 h-4 cursor-pointer'/>
                 </button>
             </div>
-        </div>
+        </li>
     );
 };
 

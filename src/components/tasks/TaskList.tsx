@@ -14,6 +14,7 @@ interface TaskListProps {
 const TaskList = ({table, taskHandler}: TaskListProps) => {
     const tasks = useAppSelector(selectTasks);
     const {setNodeRef} = useDroppable({id: table.id});
+
     const taskMap = useMemo(() => {
         return tasks.reduce((acc, task) => {
             acc[task.id] = task;
@@ -22,18 +23,21 @@ const TaskList = ({table, taskHandler}: TaskListProps) => {
     }, [tasks]);
 
     return (
-        <div ref={setNodeRef} className='h-[550px] px-2 flex flex-col gap-2 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500'>
+        <ul ref={setNodeRef}
+            className='h-[550px] px-2 flex flex-col gap-2 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500'>
             {table.tasksIds.map((taskId) => {
                 const task = taskMap[taskId];
                 return (
                     <TaskItem key={taskId} tableId={table.id} task={task}/>
                 )
             })}
-            <button onClick={() => taskHandler(table.id)}
-                    className='w-full border border-accent duration-300 hover:bg-hoverAccent/10 hover:-translate-y-0.5 rounded-lg shadow-sm shadow-hoverAccent min-h-12 mt-2 cursor-pointer text-center'>
-                <span className='font-bold text-2xl'>+</span>
-            </button>
-        </div>
+            <li>
+                <button onClick={() => taskHandler(table.id)}
+                        className='w-full border border-accent duration-300 hover:bg-hoverAccent/10 hover:-translate-y-0.5 rounded-lg shadow-sm shadow-hoverAccent min-h-12 mt-2 cursor-pointer text-center'>
+                    <span className='font-bold text-2xl'>+</span>
+                </button>
+            </li>
+        </ul>
     )
 }
 

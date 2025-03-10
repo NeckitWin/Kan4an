@@ -26,6 +26,21 @@ export const tableSlice = createSlice({
             const currentTable = state.tables.find(table => table.id === action.payload.tableId);
             if (currentTable) currentTable.tasksIds.push(action.payload.taskId);
         },
+        moveTaskToTable: (state, action: PayloadAction<{ toTableId: number; taskId: number }>) => {
+            const {taskId, toTableId} = action.payload;
+            let fromTable: Table | undefined, toTable: Table | undefined;
+
+            for (const table of state.tables) {
+                if (table.tasksIds.includes(taskId)) fromTable = table;
+                if (table.id === toTableId) toTable = table;
+                if (fromTable && toTable) break;
+            }
+
+            if (fromTable && toTable) {
+                fromTable.tasksIds = fromTable.tasksIds.filter(id => id !== taskId);
+                toTable.tasksIds.push(taskId);
+            }
+        },
         removeTaskFromTable: (state, action: PayloadAction<{ tableId: number; taskId: number; }>) => {
             const table = state.tables.find(table => table.id === action.payload.tableId);
             if (table) table.tasksIds = table.tasksIds.filter(taskId => taskId !== action.payload.taskId);
@@ -52,6 +67,7 @@ export const {
     addTable,
     removeTable,
     addTaskToTable,
+    moveTaskToTable,
     removeTaskFromTable,
     removeAllTables,
     setCurrentTableId,

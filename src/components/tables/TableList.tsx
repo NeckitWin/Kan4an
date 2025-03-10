@@ -1,15 +1,25 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {selectTables} from "../../features/tableSlice.ts";
+import {moveTaskToTable, selectTables} from "../../features/tableSlice.ts";
 import {openModal} from "../../features/modalSlice.ts";
 import TableItem from "./TableItem.tsx";
-import {DndContext} from "@dnd-kit/core";
+import {DndContext, DragEndEvent} from "@dnd-kit/core";
 
 const TableList = () => {
     const tables = useAppSelector(selectTables);
     const dispatch = useAppDispatch();
 
+    const handleDragEnd = (event: DragEndEvent) => {
+        const {active, over} = event;
+        if (!over) return;
+
+        const taskId = active.id;
+        const tableId = Number(over.id);
+
+        dispatch(moveTaskToTable({toTableId: tableId, taskId: taskId as number}));
+    }
+
     return (
-        <DndContext>
+        <DndContext onDragEnd={handleDragEnd}>
             <div
                 className='container flex flex-row bg-secondaryBack mt-8 text-textPrimary p-4 rounded-lg overflow-x-auto gap-4  [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500'>
                 {tables.map(table => (
